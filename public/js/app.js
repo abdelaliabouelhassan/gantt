@@ -1891,7 +1891,7 @@ __webpack_require__.r(__webpack_exports__);
         dependencies: '2'
       }, {
         id: '4',
-        name: 'Lloyd',
+        name: 'Morocco',
         start: '2019-01-15',
         end: '2019-01-20',
         progress: 40,
@@ -1917,7 +1917,7 @@ __webpack_require__.r(__webpack_exports__);
       var id = this.id++;
       this.tasks.push({
         id: '' + id + '',
-        name: 'lol ss' + this.id,
+        name: 'RANDOM XD ' + this.id,
         start: '2019-01-01',
         end: '2019-01-05',
         progress: Math.random() * 100,

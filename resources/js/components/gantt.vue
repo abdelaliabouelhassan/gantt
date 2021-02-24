@@ -50,7 +50,7 @@ export default {
                 },
                 {
                     id: '4',
-                    name: 'Lloyd',
+                    name: 'Morocco',
                     start: '2019-01-15',
                     end: '2019-01-20',
                     progress: 40,
@@ -77,7 +77,7 @@ export default {
            var id =  this.id++;
       this.tasks.push({
                 id: '' + id +'',
-                name: 'lol ss' + this.id,
+                name: 'RANDOM XD ' + this.id,
                 start: '2019-01-01',
                 end: '2019-01-05',
                 progress: Math.random() * 100,
