@@ -138,10 +138,9 @@ export default {
                 },
                  on_date_change: (task, start, end) => {  if(this.index == -1){
                             this.index = task._index
-                            console.log(this.formatDate(start))
-                             console.log(this.tasks[this.index].start)
-                         if(this.formatDate(start) == this.tasks[this.index].start){
-                       this.isEnd = true;
+                
+                          if(this.formatDate(start) == this.tasks[this.index].start && this.formatDate(end) != this.tasks[this.index].end){
+                           this.isEnd = true;
                            var diftime = this.calculateDif(this.formatDate(end),this.tasks[task._index].end)
                            var i = this.index;
                         for(i; i < this.tasks.length - 1 ; i++){
@@ -150,18 +149,27 @@ export default {
                                 
                         }  
                           this.tasks[this.index].end = this.formatDate(end)
-                        this.tasks[this.index].start = this.formatDate(start)
+                          this.tasks[this.index].start = this.formatDate(start)
                       
                          this.updateTasks()
                     }
                      }
 
                      if(!this.isEnd){
+                        
+                          console.log(task._index +  " _ " + this.formatDate(start))
+                          console.log(task._index +  " _ " + this.formatDate(end))
                         this.tasks[task._index].end = this.formatDate(end)
                         this.tasks[task._index].start = this.formatDate(start)
-                         this.updateTasks();
+                        //  this.updateTasks();
                      }
                     
+
+
+                    setTimeout(() => {
+                           
+                            this.updateTasks();
+                    }, 1000);
              
                 },
                 on_progress_change: (task, progress) => {

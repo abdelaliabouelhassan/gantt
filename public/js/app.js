@@ -1978,10 +1978,8 @@ __webpack_require__.r(__webpack_exports__);
         on_date_change: function on_date_change(task, start, end) {
           if (_this.index == -1) {
             _this.index = task._index;
-            console.log(_this.formatDate(start));
-            console.log(_this.tasks[_this.index].start);
 
-            if (_this.formatDate(start) == _this.tasks[_this.index].start) {
+            if (_this.formatDate(start) == _this.tasks[_this.index].start && _this.formatDate(end) != _this.tasks[_this.index].end) {
               _this.isEnd = true;
 
               var diftime = _this.calculateDif(_this.formatDate(end), _this.tasks[task._index].end);
@@ -2001,11 +1999,15 @@ __webpack_require__.r(__webpack_exports__);
           }
 
           if (!_this.isEnd) {
+            console.log(task._index + " _ " + _this.formatDate(start));
+            console.log(task._index + " _ " + _this.formatDate(end));
             _this.tasks[task._index].end = _this.formatDate(end);
-            _this.tasks[task._index].start = _this.formatDate(start);
-
-            _this.updateTasks();
+            _this.tasks[task._index].start = _this.formatDate(start); //  this.updateTasks();
           }
+
+          setTimeout(function () {
+            _this.updateTasks();
+          }, 1000);
         },
         on_progress_change: function on_progress_change(task, progress) {
           console.log(task);
