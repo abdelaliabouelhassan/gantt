@@ -1864,6 +1864,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -1872,36 +1874,44 @@ __webpack_require__.r(__webpack_exports__);
       tasks: [{
         id: '1',
         name: 'Hello',
-        start: '2019-01-01',
-        end: '2019-01-05',
+        start: '2021-01-01',
+        end: '2021-01-05',
         progress: 10
       }, {
         id: '2',
         name: 'World',
-        start: '2019-01-05',
-        end: '2019-01-10',
+        start: '2021-01-05',
+        end: '2021-01-10',
         progress: 20,
         dependencies: '1'
       }, {
         id: '3',
         name: 'From',
-        start: '2019-01-10',
-        end: '2019-01-15',
+        start: '2021-01-10',
+        end: '2021-01-15',
         progress: 30,
         dependencies: '2'
       }, {
         id: '4',
         name: 'Morocco',
-        start: '2019-01-15',
-        end: '2019-01-20',
+        start: '2021-01-15',
+        end: '2021-01-20',
         progress: 40,
         dependencies: '3'
       }],
       gantt: {},
-      id: 5
+      id: 5,
+      index: -1,
+      isEnd: false
     };
   },
   watch: {
+    index: function index() {
+      var vm = this;
+      console.log('lol1');
+      vm.index = -1;
+      vm.isEnd = false;
+    },
     viewMode: function viewMode() {
       this.updateViewMode();
     },
@@ -1913,17 +1923,42 @@ __webpack_require__.r(__webpack_exports__);
     this.setupGanttChart();
   },
   methods: {
+    test: function test() {
+      this.tasks[0].end = '2021-02-20';
+    },
+    formatDate: function formatDate(date) {
+      var d = new Date(date),
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+      return [year, month, day].join('-');
+    },
+    addDays: function addDays(date, days) {
+      date = new Date(date);
+      var copy = new Date(Number(date));
+      copy.setDate(date.getDate() + days); //    console.log(this.formatDate(copy))
+
+      return this.formatDate(copy);
+    },
+    calculateDif: function calculateDif(newdate, olddate) {
+      var date1 = new Date(olddate);
+      var date2 = new Date(newdate);
+      var Difference_In_Time = date2.getTime() - date1.getTime();
+      var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+      return Difference_In_Days;
+    },
     addnew: function addnew() {
       var id = this.id++;
       this.tasks.push({
         id: '' + id + '',
         name: 'RANDOM XD ' + this.id,
-        start: '2019-01-01',
-        end: '2019-01-05',
+        start: '2021-01-01',
+        end: '2021-01-05',
         progress: Math.random() * 100,
         dependencies: '3'
       });
-      this.gantt.refresh(this.tasks);
     },
     changeVIewMode: function changeVIewMode(mode) {
       this.gantt.change_view_mode(mode);
@@ -1934,17 +1969,43 @@ __webpack_require__.r(__webpack_exports__);
       this.gantt = new frappe_gantt__WEBPACK_IMPORTED_MODULE_0__.default(this.$refs.gantt, this.tasks, {
         on_click: function on_click(task) {
           console.log(task);
+          console.log(_this.tasks[task._index]);
 
           _this.$emit('task-updated', task);
+
+          alert(task);
         },
         on_date_change: function on_date_change(task, start, end) {
-          console.log(task);
+          if (_this.index == -1) {
+            _this.index = task._index;
+            console.log(_this.formatDate(start));
+            console.log(_this.tasks[_this.index].start);
 
-          _this.$emit('task-date-updated', {
-            task: task,
-            start: start,
-            end: end
-          });
+            if (_this.formatDate(start) == _this.tasks[_this.index].start) {
+              _this.isEnd = true;
+
+              var diftime = _this.calculateDif(_this.formatDate(end), _this.tasks[task._index].end);
+
+              var i = _this.index;
+
+              for (i; i < _this.tasks.length - 1; i++) {
+                _this.tasks[i + 1].start = _this.addDays(_this.tasks[i + 1].start, diftime);
+                _this.tasks[i + 1].end = _this.addDays(_this.tasks[i + 1].end, diftime);
+              }
+
+              _this.tasks[_this.index].end = _this.formatDate(end);
+              _this.tasks[_this.index].start = _this.formatDate(start);
+
+              _this.updateTasks();
+            }
+          }
+
+          if (!_this.isEnd) {
+            _this.tasks[task._index].end = _this.formatDate(end);
+            _this.tasks[task._index].start = _this.formatDate(start);
+
+            _this.updateTasks();
+          }
         },
         on_progress_change: function on_progress_change(task, progress) {
           console.log(task);
@@ -40159,7 +40220,11 @@ var render = function() {
     _vm._v(" "),
     _c("hr"),
     _vm._v(" "),
-    _c("div", [_c("button", { on: { click: _vm.addnew } }, [_vm._v("Add")])])
+    _c("div", [
+      _c("button", { on: { click: _vm.addnew } }, [_vm._v("Add")]),
+      _vm._v(" "),
+      _c("button", { on: { click: _vm.test } }, [_vm._v("test")])
+    ])
   ])
 }
 var staticRenderFns = []
