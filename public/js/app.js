@@ -1908,7 +1908,6 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     index: function index() {
       var vm = this;
-      console.log('lol1');
       vm.index = -1;
       vm.isEnd = false;
     },
@@ -1989,6 +1988,22 @@ __webpack_require__.r(__webpack_exports__);
               for (i; i < _this.tasks.length - 1; i++) {
                 _this.tasks[i + 1].start = _this.addDays(_this.tasks[i + 1].start, diftime);
                 _this.tasks[i + 1].end = _this.addDays(_this.tasks[i + 1].end, diftime);
+              }
+
+              _this.tasks[_this.index].end = _this.formatDate(end);
+              _this.tasks[_this.index].start = _this.formatDate(start);
+
+              _this.updateTasks();
+            } else if (_this.formatDate(start) != _this.tasks[_this.index].start && _this.formatDate(end) == _this.tasks[_this.index].end) {
+              _this.isEnd = true;
+
+              var diftime = _this.calculateDif(_this.formatDate(start), _this.tasks[task._index].start);
+
+              var i = _this.index;
+
+              for (i; i > 0; i--) {
+                _this.tasks[i - 1].start = _this.addDays(_this.tasks[i - 1].start, diftime);
+                _this.tasks[i - 1].end = _this.addDays(_this.tasks[i - 1].end, diftime);
               }
 
               _this.tasks[_this.index].end = _this.formatDate(end);

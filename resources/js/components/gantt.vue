@@ -68,7 +68,7 @@ export default {
     watch: {
         index(){
            var vm = this
- console.log('lol1')
+
    vm.index = -1
     vm.isEnd = false    
         },
@@ -153,7 +153,22 @@ export default {
                       
                          this.updateTasks()
                     }
+                    else if (this.formatDate(start) != this.tasks[this.index].start && this.formatDate(end) == this.tasks[this.index].end){
+                          this.isEnd = true;
+                           var diftime = this.calculateDif(this.formatDate(start),this.tasks[task._index].start)
+                           var i = this.index;   
+                        for(i ; i > 0 ; i--){
+                                this.tasks[i - 1].start = this.addDays(this.tasks[i - 1].start,diftime)
+                                this.tasks[i - 1].end = this.addDays(this.tasks[i - 1].end,diftime)
+                             
+                                
+                        }  
+                          this.tasks[this.index].end = this.formatDate(end)
+                          this.tasks[this.index].start = this.formatDate(start)
+                      
+                         this.updateTasks()
                      }
+               }
 
                      if(!this.isEnd){
                         
